@@ -72,6 +72,7 @@ document.querySelector('button').addEventListener('click', getFetch)
 let KEY = "cragphpKTzQkID1PoMMIlfPlGbUb9fOEU5JJjykQ"
 // const sourceurl = `https://api.watchmode.com/v1/title/{title_id}/sources/`
 const proxy = "https://cors-anywhere.herokuapp.com/corsdemo"
+
 function getFetch(){
   const choice = document.querySelector('input').value
   const searchurl = `https://api.watchmode.com/v1/autocomplete-search/?apiKey=${KEY}&search_value=${choice}&search_type=2`
@@ -88,12 +89,16 @@ function getFetch(){
           let li = document.createElement('li');
 		  let anchor = document.createElement('a')
           let image = document.createElement('img');
+
           cid = (list[result]).id
+          
 		  li.id =("titleResultItem")
           resultlist.appendChild(li)
+
           li.addEventListener('click',getSource.bind(null,cid), false)
           anchor.innerText = (list[result]).name + `(${(list[result]).year})`
 		  anchor.href ="#streamlist"
+
           image.src = (list[result]).image_url
 		  image.classList.add("image")
 		  image.classList.add("fit")
@@ -106,9 +111,6 @@ function getFetch(){
       });
 }
 
-// need to get video id passed from getFetch to getSource
-// need to assign id to array or variable that is tagged to the htm item clicked?
-// allow user to click and didplay source for any item in result list
 
 function getSource(cid){
   let title_id = cid
