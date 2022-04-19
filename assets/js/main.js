@@ -130,7 +130,13 @@ function getSource(cid){
                 if ((data[thing])["source_id"] == (services[item])["id"]){
                     let listitem = document.createElement("li")
                     listitem.innerText = (services[item])["name"]
+                    listitem.id = "serviceResultItem"
                     streamlist.appendChild(listitem)
+                    let logos =document.createElement("img")
+                    logos.src =(services[item])["logo_100px"] 
+                    logos.classList.add("image")
+                    logos.classList.add("fit")
+                    listitem.appendChild(logos)
                 }
             }
         }
