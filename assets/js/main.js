@@ -117,25 +117,35 @@ function getSource(cid){
       .then(data => {
         console.log(data)
 		const streamlist = document.querySelector("#streamlist");
+        let nostreams = false
 		while(streamlist.firstChild){
-			streamlist.removeChild(streamlist.firstChild)
+            streamlist.removeChild(streamlist.firstChild)
 		}
+        let availableon = document.createElement("h2")
+        availableon.textContent = "Available on:"
+        document.querySelector("#streamlist").appendChild(availableon)
         for (let thing in data){
             for(let item in services){
                 if ((data[thing])["source_id"] == (services[item])["id"]){
                     let listitem = document.createElement("li")
-                    listitem.innerText = (services[item])["name"]
+                    let span = document.createElement("span")
+                    span.textContent = `${(services[item])["name"]}`
+                    // listitem.innerText = `${(services[item])["name"]}`
                     listitem.id = "serviceResultItem"
+                    listitem.appendChild(span)
                     streamlist.appendChild(listitem)
                     let logos =document.createElement("img")
                     logos.src =(services[item])["logo_100px"] 
                     logos.classList.add("image")
-                    logos.classList.add("fit")
+                    // logos.classList.add("fit")
                     listitem.appendChild(logos)
+                }
+                else{
+                    nostreams = true
                 }
             }
         }
-		if(!streamlist.firstChild){
+		if(nostreams == true){
 			let listitem = document.createElement("li")
 			listitem.innerText = "Not available on these platforms, sorry."
 			streamlist.appendChild(listitem)
@@ -374,6 +384,7 @@ for (let item in services){
   let li = document.createElement('li');
   let img = document.createElement('img')
   img.src = (services[item])["logo_100px"]
+  img.id = "searchServiceIcon"
 //   li.innerText = (services[item]).name
   li.appendChild(img)
   menu.appendChild(li)
