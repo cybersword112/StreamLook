@@ -74,31 +74,43 @@ function getFetch(){
   fetch(searchurl)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
-        console.log(data) 
-        const resultlist = document.querySelector("#titleresultlist");
+        console.log(data)
+        document.querySelector("#main").classList.remove("hideTillSearch") 
+        const resultList = document.querySelector("#titleResultList");
         let list = (data["results"])
-		while(resultlist.firstChild){
-			resultlist.removeChild(resultlist.firstChild)
+		while(resultList.firstChild){
+			resultList.removeChild(resultList.firstChild)
 		}
-        for (let result in list){
-          let li = document.createElement('li');
-		  let anchor = document.createElement('a')
-          let image = document.createElement('img');
-
-          cid = (list[result]).id
-          
-		  li.id =("titleResultItem")
-          resultlist.appendChild(li)
-
-          li.addEventListener('click',getSource.bind(null,cid), false)
-          anchor.innerText = (list[result]).name + `(${(list[result]).year})`
-		  anchor.href ="#streamlist"
-
-          image.src = (list[result]).image_url
-		  image.classList.add("image")
-		  image.classList.add("fit")
-		  li.appendChild(anchor)
-          anchor.appendChild(image)
+        
+        for(let result in list){
+            let thing;
+            if(thing == ""){
+                thing = (list[result]).name + `\n` + `(${(list[result]).year})`
+            }
+            if(thing != (list[result]).name + `\n` + `(${(list[result]).year})`){
+                let li = document.createElement('li');
+                let anchor = document.createElement('a')
+                let image = document.createElement('img');
+                let h4 = document.createElement("h4")
+                h4.innerText = (list[result]).name + `\n` + `(${(list[result]).year})`
+                h4.classList.add("frostedGlass") 
+                h4.classList.add("movieTitle") 
+                cid = (list[result]).id
+                li.classList.add("titleResultItem")
+                resultList.appendChild(li)
+                li.addEventListener('click',getSource.bind(null,cid), false)
+                anchor.href ="#streamList"
+                image.src = (list[result]).image_url
+                image.classList.add("image")
+                image.classList.add("fit")
+                li.appendChild(anchor)
+                anchor.appendChild(image)
+                anchor.appendChild(h4)
+                thing = h4.innerText 
+                //   li.appendChild(getSource(cid)) 
+            }else{
+                continue;
+            }
         }
       })
       .catch(err => {
@@ -116,40 +128,43 @@ function getSource(cid){
       .then(res => res.json()) // parse response as JSON
       .then(data => {
         console.log(data)
-		const streamlist = document.querySelector("#streamlist");
-        let nostreams = false
+		const streamlist = document.querySelector("#streamList");
 		while(streamlist.firstChild){
             streamlist.removeChild(streamlist.firstChild)
 		}
         let availableon = document.createElement("h2")
         availableon.textContent = "Available on:"
-        document.querySelector("#streamlist").appendChild(availableon)
+        streamlist.appendChild(availableon)
         for (let thing in data){
+            
+            let nostreams = false;
             for(let item in services){
+
                 if ((data[thing])["source_id"] == (services[item])["id"]){
                     let listitem = document.createElement("li")
                     let span = document.createElement("span")
                     span.textContent = `${(services[item])["name"]}`
-                    // listitem.innerText = `${(services[item])["name"]}`
                     listitem.id = "serviceResultItem"
+                    // listitem.classList.add("frostedGlass")
                     listitem.appendChild(span)
                     streamlist.appendChild(listitem)
                     let logos =document.createElement("img")
                     logos.src =(services[item])["logo_100px"] 
                     logos.classList.add("image")
-                    // logos.classList.add("fit")
                     listitem.appendChild(logos)
-                }
-                else{
+                    // return streamlist
+                }else{ 
                     nostreams = true
                 }
             }
         }
-		if(nostreams == true){
+
+		if(nostreams === true){
 			let listitem = document.createElement("li")
-			listitem.innerText = "Not available on these platforms, sorry."
+			listitem.innerText = "Not available."
 			streamlist.appendChild(listitem)
 		}
+
       })
       .catch(err => {
           console.log(`error ${err}`)
