@@ -175,21 +175,14 @@ input, select, textarea {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /*my stuff  */
 
+.hideTillSearch{
+	display: none;
+}
+
 #searchservicediv{
-	margin-top: -12%;
+	margin-top: -6%;
 	margin-bottom: 3%;
 	font-size: .75em;
 	display: flex;
