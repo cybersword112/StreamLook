@@ -59,7 +59,7 @@
 				});
 
 })(jQuery);
-
+// 'https://api.watchmode.com/v1/autocomplete-search/?apiKey=cragphpKTzQkID1PoMMIlfPlGbUb9fOEU5JJjykQ&search_value=benjamin&search_type=2'
 
 //Example fetch using pokemonapi.co
 document.querySelector('button').addEventListener('click', getFetch)
@@ -100,9 +100,15 @@ function getFetch(){
                 resultList.appendChild(li)
                 li.addEventListener('click',getSource.bind(null,cid), false)
                 anchor.href ="#streamList"
-                image.src = (list[result]).image_url
-                image.classList.add("image")
-                image.classList.add("fit")
+                if((list[result]).image_url){
+                    image.src = (list[result]).image_url
+                    image.classList.add("image")
+                    image.classList.add("fit")
+                }else{
+                    image = document.createElement("h3")
+                    image.innerText = "No Poster Available"
+                    image.style = "background-color: black; color:white; text-align:center; padding-top:25%;padding-bottom:25%;"
+                }
                 li.appendChild(anchor)
                 anchor.appendChild(image)
                 anchor.appendChild(h4)
@@ -117,7 +123,7 @@ function getFetch(){
           console.log(`error ${err}`)
       });
 }
-
+// `https://api.watchmode.com/v1/title/4147874/sources/?apiKey=cragphpKTzQkID1PoMMIlfPlGbUb9fOEU5JJjykQ`
 
 function getSource(cid){
   let title_id = cid
@@ -129,35 +135,64 @@ function getSource(cid){
       .then(data => {
         console.log(data)
 		const streamlist = document.querySelector("#streamList");
+        let section = document.querySelector("#serviceSection")
+        while(section.firstElementChild == streamlist ){
+            let availableon = document.createElement("h2")
+            availableon.textContent = "Available on:"
+            section.insertBefore(availableon,section.firstChild)
+
+        }
 		while(streamlist.firstChild){
             streamlist.removeChild(streamlist.firstChild)
 		}
-        let availableon = document.createElement("h2")
-        availableon.textContent = "Available on:"
-        streamlist.appendChild(availableon)
+        let idList = []
         for (let thing in data){
-            
+            let sourceId = (data[thing])["source_id"]
             let nostreams = false;
-            for(let item in services){
-
-                if ((data[thing])["source_id"] == (services[item])["id"]){
-                    let listitem = document.createElement("li")
-                    let span = document.createElement("span")
-                    span.textContent = `${(services[item])["name"]}`
-                    listitem.id = "serviceResultItem"
-                    // listitem.classList.add("frostedGlass")
-                    listitem.appendChild(span)
-                    streamlist.appendChild(listitem)
-                    let logos =document.createElement("img")
-                    logos.src =(services[item])["logo_100px"] 
-                    logos.classList.add("image")
-                    listitem.appendChild(logos)
-                    // return streamlist
-                }else{ 
-                    nostreams = true
-                }
+            if ((data[thing])["region"] == "US" && !idList.includes(sourceId)){
+                let listitem = document.createElement("li")
+                let a = document.createElement("a")
+                a.href=(data[thing])["web_url"]
+                let span = document.createElement("span")
+                span.textContent = `${(data[thing])["name"]}`
+                listitem.id = "serviceResultItem"
+                // listitem.classList.add("frostedGlass")
+                listitem.appendChild(a)
+                a.appendChild(span)
+                streamlist.appendChild(listitem)
+                let logos =document.createElement("img")
+                logos.src =(data[thing])["logo_100px"] 
+                logos.classList.add("image")
+                // listitem.appendChild(logos)
+                idList.push(sourceId)
+                // return streamlist
+            }else{ 
+                nostreams = true
             }
         }
+        // for (let thing in data){
+            
+        //     let nostreams = false;
+        //     for(let item in services){
+
+        //         if ((data[thing])["source_id"] == (services[item])["id"] && (data[thing])["region"] == "US"){
+        //             let listitem = document.createElement("li")
+        //             let span = document.createElement("span")
+        //             span.textContent = `${(services[item])["name"]}`
+        //             listitem.id = "serviceResultItem"
+        //             // listitem.classList.add("frostedGlass")
+        //             listitem.appendChild(span)
+        //             streamlist.appendChild(listitem)
+        //             let logos =document.createElement("img")
+        //             logos.src =(services[item])["logo_100px"] 
+        //             logos.classList.add("image")
+        //             listitem.appendChild(logos)
+        //             // return streamlist
+        //         }else{ 
+        //             nostreams = true
+        //         }
+        //     }
+        // }
 
 		if(nostreams === true){
 			let listitem = document.createElement("li")

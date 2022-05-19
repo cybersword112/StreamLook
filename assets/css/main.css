@@ -306,6 +306,7 @@ input, select, textarea {
 #serviceSection{
 	background-color: rgb(163, 163, 163);
 	width: 100%;
+	max-width: 100%;
 	height: fit-content;
 	min-height: 10em;
 	display: flex;
@@ -318,20 +319,33 @@ input, select, textarea {
 
 #serviceSection > h2{
 	color:rgb(255, 255, 255);
-	font-size: 1.6em;
+	text-transform: capitalize;
+	font-weight: 300;
+	width: fit-content;
+	font-size: 1.4em;
 	padding-right: 2%;
-	background-color: #1f232b;
+	background-color: #000000;
 	border-radius: 5%;
-	height: min-content;
-	padding-left: 2%;
+	padding:2%;
+	margin-right:2%;
+	height: fit-content;
 }
 
 #streamList{
-	list-style:none;
+	list-style:disc;
+	list-style-position: inside;
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
+	flex-flow: column;
 	justify-content: start;
 	padding-left: 2%;
+	width: 60%;
+	min-width: fit-content;
+	max-width: 100%;
+	border-right: solid 3px rgb(58, 58, 58);
+	border-left: solid 3px rgb(58, 58, 58);
+	margin-right: 2%;
 }
 
 #serviceResultItem{
@@ -339,15 +353,34 @@ input, select, textarea {
 	font-size: 1.3em;
 	font-weight: bolder;
 	margin-left:5%;
+	min-width: fit-content;
+	width: 20%;
+	text-align: start;
+	min-height: fit-content;
 }
 
 #serviceResultItem > img {
 	display: block;
 }
 
+#serviceResultItem > * {
+	color: white;
+	
+}
+
 #searchmainheader > li  #searchbutton{
 	color: rgb(255, 255, 255);
 	background-color: rgb(8, 8, 8);
+}
+
+#topButton {
+	background-color: rgb(7, 7, 7);
+	color: white;
+	width: 10%;
+}
+
+#topButton:hover{
+	background-color: rgb(233, 124, 0);
 }
 
 /* Container */
