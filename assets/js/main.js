@@ -84,6 +84,7 @@ function getFetch(){
         
         for(let result in list){
             let thing;
+            document.querySelector('#titleResultList').scrollIntoView({behavior: 'smooth',alignToTop: true})
             if(thing == ""){
                 thing = (list[result]).name + `\n` + `(${(list[result]).year})`
             }
